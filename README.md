@@ -1,6 +1,6 @@
 # RadDemo
 
-RadDemo is a simple tool for creating demonstrations orr presentations out of video files.
+RadDemo is a simple tool for creating demonstrations or presentations out of video files.
 
 ## Basic Steps
 
