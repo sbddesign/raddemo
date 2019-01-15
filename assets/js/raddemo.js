@@ -54,9 +54,13 @@ function radDemo(settings){
 
     //Function that toggles the RadDemo
     function toggleRadDemo(video) {
-        if(video.paused) {
+
+        if(video.paused && Math.ceil(video.currentTime) === Math.ceil(video.duration)) { //If we have reached end of video
+            stopRadDemo(video);
+            video.currentTime = 0;
+        } else if(video.paused) { //If the video is paused somewhere that's not the end
             startRadDemo(video);
-        } else {
+        } else { //All other situations
             stopRadDemo(video);
         }
     }
