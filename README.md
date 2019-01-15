@@ -22,11 +22,30 @@ View the demo here: https://sbddesign.github.io/raddemo/
 4. Invoke the RadDemo function in your HTML or scripts file at a point after KeyboardJS and RadDemo. Pass an array of pausePoints into the function. For example, if you want your demo video to stop at 3 seconds, 8 seconds, and 13 seconds, then you would do it like so:<br />
 ```
 <script>
-    radDemo([3,8,13]);
+    radDemo({
+        pausePoints: [3,8,13]
+    });
 </script>
 ```
 
 If everything works correctly, then you will see your video when you load the HTML page, and be able to control it with  the keyboard, and the video will stop automatically at your pause points.
+
+#### Parameters
+
+- **videoID** - (String) this corresponds to the `id` attribute of your `<video>` element. Default: "demo-video"
+- **interval** - (Integer) this is the time (in milliseconds) between RadDemo checking to see if it has reached a pausePoint. Set it higher if you are worried about performance, or set it lower if precision is critical to your demo. Default: 200
+- **pausePoints** - (Array) these are the points where you want your demo to pause (in seconds). If your pause point needs to fall somewhere very specific, like 10 seconds and 15 frames (in a 29.97fps video), then use a decimal number like 10.5. Default: [2, 4, 6, 8, 10] *(Completely arbitrary)*
+
+Example:
+```
+radDemo({
+    videoID: "my-video",
+    pausePoints: [3, 10.5, 17.25, 22],
+    interval: 100
+});
+
+```
+
 
 ### Controls
 

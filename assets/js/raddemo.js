@@ -1,20 +1,20 @@
 // RadDemo v0.1
 // https://github.com/sbddesign/raddemo
 
-function radDemo(pausePoints){
+function radDemo(settings){
+
+    if(settings === undefined) var settings = new Object();
+    if(settings.videoID === undefined) settings['videoID'] = "demo-video";
+    if(settings.interval === undefined) settings['interval'] = 200;
+    if(settings.pausePoints === undefined) settings['pausePoints'] = new Array(2, 4, 6, 8, 10);
+
+
     //Variables
-    var video = document.getElementById("demo-video");
-    var interval = 200;
-    if(typeof pausePoints !== 'object') {
-        var pausePoints = [
-            2,
-            4,
-            6,
-            8,
-            10
-        ];
-    }
-    var reportCurrentTime,
+    var video       = document.getElementById(settings.videoID),
+        interval    = settings.interval,
+        subinterval = interval/2,
+        pausePoints = settings.pausePoints,
+        reportCurrentTime,
         prevPausePoint,
         currentPausePoint,
         nextPausePoint,
@@ -30,9 +30,8 @@ function radDemo(pausePoints){
 
                     pausePoints.forEach(function(value, index){
 
-                        // console.log(index);
                         //If current time is within .1s of this pause point
-                        if( currentTime > value - .1 && currentTime < value + .1) {
+                        if( currentTime > value - (subinterval/1000) && currentTime < value + (subinterval/1000)) {
                             stopRadDemo(video);
                             redefinePausePoints(index)
                         }

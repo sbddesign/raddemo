@@ -10,7 +10,10 @@
 <body>
   <video src="assets/video/RadDemo.mp4" width="1280" height="720" id="demo-video"></video>
   <script>
-    radDemo([3,8,13]);
+    radDemo({
+        pausePoints: [3,8,13],
+        interval: 100
+    });
   </script>
 </body>
 </html>
