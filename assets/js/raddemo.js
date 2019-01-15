@@ -1,3 +1,6 @@
+// RadDemo v0.1
+// https://github.com/sbddesign/raddemo
+
 function radDemo(pausePoints){
     //Variables
     var video = document.getElementById("demo-video");
