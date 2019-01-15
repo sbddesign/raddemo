@@ -20,8 +20,12 @@ function radDemo(settings){
         nextPausePoint,
         currentTime;
 
+    video.insertAdjacentHTML('afterend', '<div id="rd-pause"></div>');
+    var pause = document.getElementById("rd-pause");
+
     //Function that starts the RadDemo
     function startRadDemo(video){
+        pause.classList.add('hide-fade');
         video.play();
         if(!video.paused) {
             reportCurrentTime = setInterval(function(){
@@ -43,6 +47,7 @@ function radDemo(settings){
 
     //Function that stops the RadDemo
     function stopRadDemo(video){
+        pause.classList.remove('hide-fade');
         video.pause();
         clearInterval(reportCurrentTime);
     }

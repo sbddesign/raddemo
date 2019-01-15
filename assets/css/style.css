@@ -3,6 +3,27 @@ body,html {
     padding: 0;
 }
 
+.hide-fade {
+    opacity:0 !important;
+    transition: opacity 0.5s !important;
+}
+
+#rd-pause {
+    width: 4rem;
+    height:4rem;
+    background-image:url('../svg/pause.svg');
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity:0.25;
+    position:fixed;
+    left:2rem;
+    top:2rem;
+    z-index:99;
+
+    transition: opacity 0.25s;
+}
+
 video {
     width:100%;
     height: auto;
