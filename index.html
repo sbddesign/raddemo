@@ -11,8 +11,12 @@
   <video src="assets/video/RadDemo.mp4" width="1280" height="720" id="demo-video"></video>
   <script>
     radDemo({
-        pausePoints: [3,8,13],
-        interval: 100
+        interval: 100,
+        pausePoints: ['0:00:03:00', '0:00:08:00', '0:00:13:00'],
+        pauseFormat: 'SMTP',
+        // pausePoints: [3, 8, 13.0], /* Alternatively, provide timecodes in pure seconds. You can use decimals, too. */
+        //pauseFormat: 'seconds',
+        framerate: 29.97
     });
   </script>
 </body>

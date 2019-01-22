@@ -35,6 +35,8 @@ If everything works correctly, then you will see your video when you load the HT
 - **videoID** - (String) this corresponds to the `id` attribute of your `<video>` element. Default: "demo-video"
 - **interval** - (Integer) this is the time (in milliseconds) between RadDemo checking to see if it has reached a pausePoint. Set it higher if you are worried about performance, or set it lower if precision is critical to your demo. Default: 200
 - **pausePoints** - (Array) these are the points where you want your demo to pause (in seconds). If your pause point needs to fall somewhere very specific, like 10 seconds and 15 frames (in a 29.97fps video), then use a decimal number like 10.5. Default: [2, 4, 6, 8, 10] *(Completely arbitrary)*
+- **pauseFormat** - (String) this specifies the format of your pausePoints. RadDemo supports 2 formats: pure seconds i.e. `[2, 4.0, 5.25, 9]`, as well as SMTP timecodes i.e. `['0:00:02:00', '0:00:04:00', '0:00:05:08', '0:00:09:00']`. If you use SMTP, you should also specify a framerate. Default: "seconds"
+- **framerate** - (Integer) this specifies the framerate of your video file. This is important if you are providing SMTP timecodes and using a framerate other than 29.97fps. Default: 29.97
 
 Example:
 ```

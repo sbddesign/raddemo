@@ -7,6 +7,8 @@ function radDemo(settings){
     if(settings.videoID === undefined) settings['videoID'] = "demo-video";
     if(settings.interval === undefined) settings['interval'] = 200;
     if(settings.pausePoints === undefined) settings['pausePoints'] = new Array(2, 4, 6, 8, 10);
+    if(settings.pauseFormat === undefined) settings['pauseFormat'] = 'seconds';
+    if(settings.framerate === undefined) settings['framerate'] = 29.97;
 
 
     //Variables
@@ -14,6 +16,8 @@ function radDemo(settings){
         interval    = settings.interval,
         subinterval = interval/2,
         pausePoints = settings.pausePoints,
+        pauseFormat = settings.pauseFormat,
+        framerate   = settings.framerate,
         reportCurrentTime,
         prevPausePoint,
         currentPausePoint,
@@ -21,6 +25,11 @@ function radDemo(settings){
         currentTime;
 
     video.insertAdjacentHTML('afterend', '<div id="rd-pause"></div>');
+
+    if(pauseFormat === 'SMTP'){
+        convertTimecodeListToSecondsList(pausePoints, framerate);
+    }
+
     var pause = document.getElementById("rd-pause");
 
     //Function that starts the RadDemo
@@ -87,6 +96,23 @@ function radDemo(settings){
         currentPausePoint=index;
         prevPausePoint = currentPausePoint-1;
         nextPausePoint = currentPausePoint+1;
+    }
+
+    function convertTimecodeToSeconds(timecode, framerate) {
+        var timeArray = timecode.split(':');
+        var hoursInSeconds      =   parseInt(timeArray[0]) * 60 * 60,
+            minutesInSeconds    =   parseInt(timeArray[1]) * 60,
+            seconds             =   parseInt(timeArray[2]),
+            framesInSeconds     =   parseInt(timeArray[3]) * (1/framerate);
+
+        return hoursInSeconds + minutesInSeconds + seconds + framesInSeconds;
+    }
+
+    function convertTimecodeListToSecondsList(timecodeList, framerate) {
+        for (var i = 0; i < timecodeList.length; i++){
+            timecodeList[i] = convertTimecodeToSeconds(timecodeList[i], framerate);
+        }
+        console.log(timecodeList);
     }
 
     //Bind the spacebar to start and stop the RadDemo
