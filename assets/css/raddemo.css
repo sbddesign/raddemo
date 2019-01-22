@@ -24,6 +24,18 @@ body,html {
     transition: opacity 0.25s;
 }
 
+#rd-debug {
+    position: fixed;
+    top: 3rem;
+    left: 7rem;
+    font-family: sans-serif;
+    background: #000;
+    color: #fff;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    opacity: 0.5;
+}
+
 video {
     width:100%;
     height: auto;

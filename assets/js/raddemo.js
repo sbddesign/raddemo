@@ -9,6 +9,7 @@ function radDemo(settings){
     if(settings.pausePoints === undefined) settings['pausePoints'] = new Array(2, 4, 6, 8, 10);
     if(settings.pauseFormat === undefined) settings['pauseFormat'] = 'seconds';
     if(settings.framerate === undefined) settings['framerate'] = 29.97;
+    if(settings.debug === undefined) settings['debug'] = false;
 
 
     //Variables
@@ -18,6 +19,7 @@ function radDemo(settings){
         pausePoints = settings.pausePoints,
         pauseFormat = settings.pauseFormat,
         framerate   = settings.framerate,
+        debug       = settings.debug,
         reportCurrentTime,
         prevPausePoint,
         currentPausePoint,
@@ -32,6 +34,11 @@ function radDemo(settings){
 
     var pause = document.getElementById("rd-pause");
 
+    if(debug === true) {
+        pause.insertAdjacentHTML('afterend', '<div id="rd-debug">0</div>');
+        debug = document.getElementById("rd-debug");
+    }
+
     //Function that starts the RadDemo
     function startRadDemo(video){
         pause.classList.add('hide-fade');
@@ -40,6 +47,8 @@ function radDemo(settings){
             reportCurrentTime = setInterval(function(){
                 if(video.readyState > 0) {
                     currentTime = video.currentTime;
+
+                    if(debug) debug.innerHTML = video.currentTime;
 
                     pausePoints.forEach(function(value, index){
 
