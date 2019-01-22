@@ -1,4 +1,4 @@
-// RadDemo v0.1
+// RadDemo v0.2
 // https://github.com/sbddesign/raddemo
 
 function radDemo(settings){
