@@ -18,7 +18,8 @@ View the demo here: https://sbddesign.github.io/raddemo/
 2. Include the video in your HTML using `<video>`.
 3. Include KeyboardJS and RadDemo in your HTML.<br />
 `<script src="assets/js/keyboard.min.js"></script>`<br />
-`<script src="assets/js/raddemo.js"></script>`
+`<script src="assets/js/raddemo.js"></script>`<br />
+`<link rel="stylesheet" type="text/css" href="assets/css/raddemo.css" />`<br />
 4. Invoke the RadDemo function in your HTML or scripts file at a point after KeyboardJS and RadDemo. Pass an array of pausePoints into the function. For example, if you want your demo video to stop at 3 seconds, 8 seconds, and 13 seconds, then you would do it like so:<br />
 ```
 <script>
