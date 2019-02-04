@@ -4,26 +4,34 @@
 function radDemo(settings){
 
     if(settings === undefined) var settings = new Object();
-    if(settings.videoID === undefined) settings['videoID'] = "demo-video";
+    if(settings.videoID === undefined) settings['videoID'] = "raddemo";
     if(settings.interval === undefined) settings['interval'] = 200;
     if(settings.pausePoints === undefined) settings['pausePoints'] = new Array(2, 4, 6, 8, 10);
     if(settings.pauseFormat === undefined) settings['pauseFormat'] = 'seconds';
     if(settings.framerate === undefined) settings['framerate'] = 29.97;
     if(settings.debug === undefined) settings['debug'] = false;
-
+    if(settings.playlist === undefined) {
+        settings['playlist'] = [
+            'assets/video/RadDemo.mp4',
+            'assets/video/RadDemo_inverted.mp4'
+        ];
+    }
 
     //Variables
-    var video       = document.getElementById(settings.videoID),
-        interval    = settings.interval,
-        subinterval = interval/2,
-        pausePoints = settings.pausePoints,
-        pauseFormat = settings.pauseFormat,
-        framerate   = settings.framerate,
-        debug       = settings.debug,
+    var video                   = document.getElementById(settings.videoID),
+        interval                = settings.interval,
+        subinterval             = interval/2,
+        pausePoints             = settings.pausePoints,
+        pauseFormat             = settings.pauseFormat,
+        framerate               = settings.framerate,
+        debug                   = settings.debug,
+        playlist                = settings.playlist,
+        currentPlaylistVideo    = 0,
+        videoStatus             = 'paused',
         reportCurrentTime,
         prevPausePoint,
         currentPausePoint,
-        nextPausePoint,
+        nextPausePoint          = 0,
         currentTime;
 
     video.insertAdjacentHTML('afterend', '<div id="rd-pause"></div>');
@@ -40,9 +48,15 @@ function radDemo(settings){
     }
 
     //Function that starts the RadDemo
-    function startRadDemo(video){
+    function startRadDemo(video, next){
+        if(video.dataset.nowplaying === undefined) { // Video has not been started ever
+            navigatePlaylist(video, false);
+        } else if(video.dataset.nowplaying !== undefined && videoStatus === 'ended') { //Video has ended
+            navigatePlaylist(video, true);
+        }
         pause.classList.add('hide-fade');
         video.play();
+        videoStatus = 'playing';
         if(!video.paused) {
             reportCurrentTime = setInterval(function(){
                 if(video.readyState > 0) {
@@ -55,7 +69,7 @@ function radDemo(settings){
                         //If current time is within .1s of this pause point
                         if( currentTime > value - (subinterval/1000) && currentTime < value + (subinterval/1000)) {
                             stopRadDemo(video);
-                            redefinePausePoints(index)
+                            redefinePausePoints(index);
                         }
                     });
                 }
@@ -64,22 +78,27 @@ function radDemo(settings){
     }
 
     //Function that stops the RadDemo
-    function stopRadDemo(video){
+    function stopRadDemo(video, ended){
         pause.classList.remove('hide-fade');
-        video.pause();
+        if(!video.paused) video.pause();
+        if(ended) {
+            videoStatus = 'ended';
+        } else {
+            videoStatus = 'paused';
+        }
         clearInterval(reportCurrentTime);
     }
 
-    function restartRadDemo(video){
-        stopRadDemo(video);
+    function restartRadDemo(video, ended){
+        stopRadDemo(video, ended);
         startRadDemo(video);
     }
 
     //Function that toggles the RadDemo
     function toggleRadDemo(video) {
 
-        if(video.paused && Math.ceil(video.currentTime) === Math.ceil(video.duration)) { //If we have reached end of video
-            stopRadDemo(video);
+        if(Math.ceil(video.currentTime) === Math.ceil(video.duration)) { //If we have reached end of video
+            restartRadDemo(video, true);
             video.currentTime = 0;
         } else if(video.paused) { //If the video is paused somewhere that's not the end
             startRadDemo(video);
@@ -90,15 +109,24 @@ function radDemo(settings){
 
     function navigateRadDemo(video, destination) {
 
-        if(pausePoints[destination] === undefined) {
-            video.currentTime = 0;
+        if(pausePoints[destination] === undefined) { //No more pausePoints in set, so we must be finished with video
+            video.currentTime = video.duration;
+            toggleRadDemo(video);
             redefinePausePoints(0);
         } else {
             video.currentTime = pausePoints[destination];
             redefinePausePoints(destination);
+            restartRadDemo(video);
         }
+    }
 
-        restartRadDemo(video);
+    function navigatePlaylist(video, next){
+        if(next === true) currentPlaylistVideo++;
+        if(playlist[currentPlaylistVideo] === undefined) {
+            currentPlaylistVideo = 0;
+        }
+        video.setAttribute('src', playlist[currentPlaylistVideo]);
+        video.dataset.nowplaying = currentPlaylistVideo;
     }
 
     function redefinePausePoints(index) {
@@ -121,7 +149,6 @@ function radDemo(settings){
         for (var i = 0; i < timecodeList.length; i++){
             timecodeList[i] = convertTimecodeToSeconds(timecodeList[i], framerate);
         }
-        console.log(timecodeList);
     }
 
     //Bind the spacebar to start and stop the RadDemo
