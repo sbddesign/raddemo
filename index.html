@@ -11,13 +11,22 @@
   <video src="assets/video/RadDemo.mp4" width="1280" height="720" id="raddemo"></video>
   <script>
     radDemo({
-        interval: 100,
-        pausePoints: ['0:00:03:00', '0:00:08:00', '0:00:13:00'],
-        pauseFormat: 'SMTP',
-        // pausePoints: [3, 8, 13.0], /* Alternatively, provide timecodes in pure seconds. You can use decimals, too. */
-        //pauseFormat: 'seconds',
-        framerate: 29.97,
-        // debug: true /* Use this if you want to see the timecode of your video */
+      interval: 100,
+      videoID: 'raddemo',
+      playlist: [
+        {
+          videoSource: 'assets/video/RadDemo.mp4',
+          pausePoints: ['0:00:03:00', '0:00:08:00', '0:00:13:00'],
+          pauseFormat: 'SMTP',
+          framerate: 29.97
+        },
+        {
+          videoSource: 'assets/video/RadDemo_inverted.mp4',
+          pausePoints: ['0:00:02:00', '0:00:05:00', '0:00:12:00'],
+          pauseFormat: 'SMTP',
+          framerate: 29.97
+        }
+      ]
     });
   </script>
 </body>

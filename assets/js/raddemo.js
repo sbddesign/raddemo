@@ -1,4 +1,4 @@
-// RadDemo v0.2
+// RadDemo v0.3
 // https://github.com/sbddesign/raddemo
 
 function radDemo(settings){
@@ -21,12 +21,9 @@ function radDemo(settings){
     var video                   = document.getElementById(settings.videoID),
         interval                = settings.interval,
         subinterval             = interval/2,
-        pausePoints             = settings.pausePoints,
-        pauseFormat             = settings.pauseFormat,
-        framerate               = settings.framerate,
-        debug                   = settings.debug,
         playlist                = settings.playlist,
         currentPlaylistVideo    = 0,
+        debug                   = settings.debug,
         videoStatus             = 'paused',
         reportCurrentTime,
         prevPausePoint,
@@ -34,11 +31,9 @@ function radDemo(settings){
         nextPausePoint          = 0,
         currentTime;
 
-    video.insertAdjacentHTML('afterend', '<div id="rd-pause"></div>');
+    loadPausePoints();
 
-    if(pauseFormat === 'SMTP'){
-        convertTimecodeListToSecondsList(pausePoints, framerate);
-    }
+    video.insertAdjacentHTML('afterend', '<div id="rd-pause"></div>');
 
     var pause = document.getElementById("rd-pause");
 
@@ -125,8 +120,19 @@ function radDemo(settings){
         if(playlist[currentPlaylistVideo] === undefined) {
             currentPlaylistVideo = 0;
         }
-        video.setAttribute('src', playlist[currentPlaylistVideo]);
+        loadPausePoints();
+        video.setAttribute('src', playlist[currentPlaylistVideo].videoSource);
         video.dataset.nowplaying = currentPlaylistVideo;
+    }
+
+    function loadPausePoints(){
+        pausePoints     = playlist[currentPlaylistVideo].pausePoints;
+        framerate       = playlist[currentPlaylistVideo].framerate;
+
+        if(playlist[currentPlaylistVideo].pauseFormat === 'SMTP'){
+            convertTimecodeListToSecondsList(pausePoints, framerate);
+            playlist[currentPlaylistVideo].pauseFormat = 'seconds';
+        }
     }
 
     function redefinePausePoints(index) {

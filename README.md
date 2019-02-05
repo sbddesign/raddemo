@@ -4,6 +4,8 @@ RadDemo is a simple tool for creating demonstrations or presentations out of vid
 
 View the demo here: https://sbddesign.github.io/raddemo/
 
+Caution: RadDemo is not yet recommended for production use unless you love to tinker.
+
 ## Instructions
 
 ### Basic Steps
@@ -24,7 +26,12 @@ View the demo here: https://sbddesign.github.io/raddemo/
 ```
 <script>
     radDemo({
-        pausePoints: [3,8,13]
+      playlist: [
+        {
+          videoSource: 'assets/video/RadDemo.mp4',
+          pausePoints: [3, 8, 13],
+        }
+      ]
     });
 </script>
 ```
@@ -35,19 +42,34 @@ If everything works correctly, then you will see your video when you load the HT
 
 - **videoID** - (String) this corresponds to the `id` attribute of your `<video>` element. Default: "demo-video"
 - **interval** - (Integer) this is the time (in milliseconds) between RadDemo checking to see if it has reached a pausePoint. Set it higher if you are worried about performance, or set it lower if precision is critical to your demo. Default: 200
-- **pausePoints** - (Array) these are the points where you want your demo to pause (in seconds). If your pause point needs to fall somewhere very specific, like 10 seconds and 15 frames (in a 29.97fps video), then use a decimal number like 10.5. Default: [2, 4, 6, 8, 10] *(Completely arbitrary)*
-- **pauseFormat** - (String) this specifies the format of your pausePoints. RadDemo supports 2 formats: pure seconds i.e. `[2, 4.0, 5.25, 9]`, as well as SMTP timecodes i.e. `['0:00:02:00', '0:00:04:00', '0:00:05:08', '0:00:09:00']`. If you use SMTP, you should also specify a framerate. Default: "seconds"
-- **framerate** - (Integer) this specifies the framerate of your video file. This is important if you are providing SMTP timecodes and using a framerate other than 29.97fps. Default: 29.97
 - **debug** - (Boolean) setting this to `true` displays the tiemcode of the video. This can be useful if you are having trouble getting your pausePoints set just right. Default: false
+- **playlist** - (Array) RadDemo now supports multiple videos with **playlist**. Each item in this array is it's own object that specifies the URI, framerate, timecode format, and pause points using the following entries. (If left unspecified, they will default).
+  - **videoSource** - (String) The path to your video file (relative or absolute).
+  - **pausePoints** - (Array) these are the points where you want your demo to pause (in seconds). If your pause point needs to fall somewhere very specific, like 10 seconds and 15 frames (in a 29.97fps video), then use a decimal number like 10.5. Default: [2, 4, 6, 8, 10] *(Completely arbitrary)*
+  - **pauseFormat** - (String) this specifies the format of your pausePoints. RadDemo supports 2 formats: pure seconds i.e. `[2, 4.0, 5.25, 9]`, as well as SMTP timecodes i.e. `['0:00:02:00', '0:00:04:00', '0:00:05:08', '0:00:09:00']`. If you use SMTP, you should also specify a framerate. Default: "seconds"
+  - **framerate** - (Integer) this specifies the framerate of your video file. This is important if you are providing SMTP timecodes and using a framerate other than 29.97fps. Default: 29.97
 
 Example:
 ```
 radDemo({
-    videoID: "my-video",
-    pausePoints: [3, 10.5, 17.25, 22],
-    interval: 100
+  interval: 100,
+  videoID: 'raddemo',
+  debug: true, /* Use this if you want to see the timecode of your video */
+  playlist: [
+    {
+      videoSource: 'assets/video/RadDemo.mp4',
+      pausePoints: ['0:00:03:00', '0:00:08:00', '0:00:13:00'],
+      pauseFormat: 'SMTP',
+      framerate: 29.97
+    },
+    {
+      videoSource: 'assets/video/RadDemo_inverted.mp4',
+      pausePoints: ['0:00:03:00', '0:00:08:00', '0:00:13:00'],
+      pauseFormat: 'SMTP',
+      framerate: 29.97
+    }
+  ]
 });
-
 ```
 
 
