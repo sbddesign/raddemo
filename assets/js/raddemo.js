@@ -114,8 +114,12 @@ function radDemo(settings){
         }
     }
 
-    function navigatePlaylist(video, next){
-        if(next === true) currentPlaylistVideo++;
+    function navigatePlaylist(video, next, destination){
+        if(next === true) {
+            currentPlaylistVideo++;
+        } else if (destination) {
+            currentPlaylistVideo = destination-1;
+        }
         if(playlist[currentPlaylistVideo] === undefined) {
             currentPlaylistVideo = 0;
         }
@@ -172,5 +176,10 @@ function radDemo(settings){
     //Bind the escape key and left arrow to go back to previous pause point
     keyboardJS.bind(['escape', 'left'], function(e) {
         navigateRadDemo(video, prevPausePoint);
+    });
+
+    //Bind the 1-0 number keys to navigate the playlist
+    keyboardJS.bind(['1', '2', '3', '4', '5', '6', '7', '8', '9', '0',], function(e) {
+        navigatePlaylist(video, false, e.key);
     });
 }
