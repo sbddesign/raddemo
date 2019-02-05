@@ -12,8 +12,18 @@ function radDemo(settings){
     if(settings.debug === undefined) settings['debug'] = false;
     if(settings.playlist === undefined) {
         settings['playlist'] = [
-            'assets/video/RadDemo.mp4',
-            'assets/video/RadDemo_inverted.mp4'
+            {
+                videoSource: 'assets/video/RadDemo.mp4',
+                pausePoints: ['0:00:03:00', '0:00:08:00', '0:00:13:00'],
+                pauseFormat: 'SMTP',
+                framerate: 29.97
+            },
+            {
+                videoSource: 'assets/video/RadDemo_inverted.mp4',
+                pausePoints: ['0:00:02:00', '0:00:05:00', '0:00:12:00'],
+                pauseFormat: 'SMTP',
+                framerate: 29.97
+            }
         ];
     }
 
@@ -180,6 +190,8 @@ function radDemo(settings){
 
     //Bind the 1-0 number keys to navigate the playlist
     keyboardJS.bind(['1', '2', '3', '4', '5', '6', '7', '8', '9', '0',], function(e) {
+        stopRadDemo(video);
         navigatePlaylist(video, false, e.key);
+        startRadDemo(video);
     });
 }
