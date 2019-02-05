@@ -52,7 +52,7 @@ function radDemo(settings){
         pause.classList.add('hide-fade');
         video.play();
         videoStatus = 'playing';
-        if(!video.paused) {
+        if(!video.paused && pausePoints) {
             reportCurrentTime = setInterval(function(){
                 if(video.readyState > 0) {
                     currentTime = video.currentTime;
@@ -103,8 +103,7 @@ function radDemo(settings){
     }
 
     function navigateRadDemo(video, destination) {
-
-        if(pausePoints[destination] === undefined) { //No more pausePoints in set, so we must be finished with video
+        if(!pausePoints || pausePoints[destination] === undefined) { //No more pausePoints in set, so we must be finished with video (or no pausePoints defined at all)
             video.currentTime = video.duration;
             toggleRadDemo(video);
             redefinePausePoints(0);
@@ -127,6 +126,9 @@ function radDemo(settings){
 
     function loadPausePoints(){
         pausePoints     = playlist[currentPlaylistVideo].pausePoints;
+
+        if(!pausePoints) return false;
+
         framerate       = playlist[currentPlaylistVideo].framerate;
 
         if(playlist[currentPlaylistVideo].pauseFormat === 'SMTP'){
