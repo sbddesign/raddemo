@@ -31,6 +31,7 @@ function radDemo(settings){
     var video                   = document.getElementById(settings.videoID),
         interval                = settings.interval,
         subinterval             = interval/2,
+        superinterval           = interval*2,
         playlist                = settings.playlist,
         currentPlaylistVideo    = 0,
         debug                   = settings.debug,
@@ -63,22 +64,25 @@ function radDemo(settings){
         video.play();
         videoStatus = 'playing';
         if(!video.paused && pausePoints) {
-            reportCurrentTime = setInterval(function(){
-                if(video.readyState > 0) {
-                    currentTime = video.currentTime;
+            setTimeout(function() {
+                reportCurrentTime = setInterval(function () {
+                    if (video.readyState > 0) {
+                        currentTime = video.currentTime;
 
-                    if(debug) debug.innerHTML = video.currentTime;
+                        if (debug) debug.innerHTML = video.currentTime;
 
-                    pausePoints.forEach(function(value, index){
+                        pausePoints.forEach(function (value, index) {
 
-                        //If current time is within .1s of this pause point
-                        if( currentTime > value - (subinterval/1000) && currentTime < value + (subinterval/1000)) {
-                            stopRadDemo(video);
-                            redefinePausePoints(index);
-                        }
-                    });
-                }
-            }, interval);
+                            //If current time is within .1s of this pause point
+                            if (currentTime > value - (subinterval / 1000) && currentTime < value + (subinterval / 1000)) {
+                                stopRadDemo(video);
+                                video.dataset.currentPausePoint = value;
+                                redefinePausePoints(index);
+                            }
+                        });
+                    }
+                }, interval);
+            }, superinterval);
         }
     }
 
@@ -101,7 +105,6 @@ function radDemo(settings){
 
     //Function that toggles the RadDemo
     function toggleRadDemo(video) {
-
         if(Math.ceil(video.currentTime) === Math.ceil(video.duration)) { //If we have reached end of video
             restartRadDemo(video, true);
             video.currentTime = 0;
