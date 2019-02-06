@@ -31,7 +31,7 @@ function radDemo(settings){
     var video                   = document.getElementById(settings.videoID),
         interval                = settings.interval,
         subinterval             = interval/2,
-        superinterval           = interval*2,
+        superinterval           = interval*4,
         playlist                = settings.playlist,
         currentPlaylistVideo    = 0,
         debug                   = settings.debug,
