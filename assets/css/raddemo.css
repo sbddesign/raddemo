@@ -4,6 +4,7 @@
 body,html {
     margin:0;
     padding: 0;
+    height:100%;
 }
 
 .hide-fade {
@@ -39,7 +40,16 @@ body,html {
     opacity: 0.5;
 }
 
-video {
+video.raddemo {
     width:100%;
     height: auto;
+}
+
+@media (min-aspect-ratio: 17/9) {
+    video.raddemo {
+        width: auto;
+        height:100%;
+        margin: auto;
+        display: block;
+    }
 }
